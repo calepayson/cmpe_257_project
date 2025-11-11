@@ -15,7 +15,7 @@ def print_title(title):
 def print_info(df):
     print(df.info())
 
-data_dir = Path(__file__).parent.parent / 'data'
+data_dir = Path(__file__).parent.parent / 'data' / 'raw'
 
 for file in data_dir.glob('*.csv'):
     df = pd.read_csv(file)
