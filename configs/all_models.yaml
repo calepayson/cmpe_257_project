@@ -1,6 +1,7 @@
 config_name: full_experiments
 windows: [2, 3, 4, 5]
 models:
+
   - name: linear_regression
     params: {}
   - name: ridge_regression

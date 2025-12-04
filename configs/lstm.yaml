@@ -1,0 +1,14 @@
+config_name: lstm
+windows: [2, 3, 4, 5]
+models:
+
+  - name: lstm_regressor
+    params:
+      hidden_size: 128
+      num_layers: 2
+      dropout: 0.2
+      epochs: 20
+      batch_size: 256
+      learning_rate: 0.001
+metrics: [mse, mae, r2]
+save_models: true

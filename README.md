@@ -200,7 +200,7 @@ python -m src.main --config configs/all_models.yaml.yaml
 Config anatomy:
 - `config_name`: label for the experiment folder inside `results/`.
 - `windows`: sliding-window sizes to iterate over.
-- `models`: collection of `{name, params}` entries. Available names now include `linear_regression`, `polynomial_regression`, `xgboost_regressor`, and `lstm_regressor`.
+- `models`: collection of `{name, params}` entries. Available names now include `linear_regression`, `polynomial_regression`, `random_forest_regressor`, `gradient_boosting_regressor`, `mlp_regressor`, `xgboost_regressor`, and `lstm_regressor`.
 - `save_models`: toggle persistence of trained estimators.
 
 Add more configs (e.g., `configs/<experiment>.yaml`) to sweep different hyperparameters or estimators—the main function will automatically pick them up once the model is registered in `models/__init__.py`.

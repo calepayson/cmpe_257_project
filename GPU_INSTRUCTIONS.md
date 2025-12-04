@@ -1,6 +1,6 @@
 # Running the ML Project on GPU
 
-This guide explains how to run the stock market prediction project (XGBoost + LSTM) on a GPU for faster training. Since CUDA is not supported on macOS, we recommend using Google Colab (free) or a cloud GPU instance.
+This guide explains how to run the stock market prediction project (all models: Linear, Polynomial, Random Forest, Gradient Boosting, MLP, XGBoost, LSTM) on a GPU for faster training. XGBoost and LSTM models will automatically use GPU acceleration when available. Since CUDA is not supported on macOS, we recommend using Google Colab (free) or a cloud GPU instance.
 
 ## Option 1: Google Colab (Recommended, Free)
 
@@ -31,8 +31,9 @@ Execute:
 ```
 !python -m src.main --config configs/all_models.yaml
 ```
-- This will train XGBoost and LSTM with cross-validation.
-- Expected time: 10-30 minutes (vs. 3-5 hours on CPU).
+- This will train all models (Linear, Polynomial, Random Forest, Gradient Boosting, MLP, XGBoost, LSTM) with cross-validation.
+- XGBoost and LSTM will use GPU acceleration for much faster training.
+- Expected time: 30-60 minutes (vs. hours on CPU).
 - Results will be saved in `results/`.
 
 ### Step 5: Monitor and Download Results

@@ -1,0 +1,14 @@
+config_name: xgboost
+windows: [2, 3, 4, 5]
+models:
+  - name: xgboost_regressor
+    params:
+      n_estimators: 500
+      learning_rate: 0.05
+      max_depth: 6
+      subsample: 0.7
+      colsample_bytree: 0.8
+      objective: reg:squarederror
+      random_state: 42
+metrics: [mse, mae, r2]
+save_models: true
