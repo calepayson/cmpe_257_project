@@ -125,6 +125,11 @@ class LSTMRegressor(BaseEstimator, RegressorMixin):
         return values.reshape(len(X), seq_len, features_per_step)
 
     def fit(self, X: pd.DataFrame, y: pd.Series | np.ndarray) -> "LSTMRegressor":  # type: ignore[override]
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        logger.info(f"Starting LSTM training: epochs={self.epochs}, batch_size={self.batch_size}, device={self.device}")
+        
         X_seq = self._prepare_sequences(X, fit_structure=True)
         y_array = np.asarray(y, dtype=np.float32).reshape(-1)
 
@@ -160,11 +165,11 @@ class LSTMRegressor(BaseEstimator, RegressorMixin):
 
                 epoch_loss += loss.item() * batch_X.size(0)
 
-            if self.verbose:
-                avg_loss = epoch_loss / len(loader.dataset)
-                print(f"[LSTMRegressor] epoch={epoch+1}/{self.epochs} loss={avg_loss:.6f}")
+            avg_loss = epoch_loss / len(loader.dataset)
+            logger.info(f"LSTM Epoch {epoch+1}/{self.epochs} completed - Avg Loss: {avg_loss:.6f}")
 
         self._model.eval()
+        logger.info("LSTM training completed")
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:  # type: ignore[override]

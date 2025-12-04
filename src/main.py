@@ -11,7 +11,7 @@ from src.utils import (
     save_eval_results,
 )
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 
@@ -63,18 +63,20 @@ def main():
     config = load_config(args.config)
     config_name = config["config_name"]
     windows = config["windows"]
+    models = config["models"]
 
-    logger.info(f"Using config: {config_name}")
+    logger.info(f"Using config: {config_name} with {len(models)} model(s) and {len(windows)} window(s)")
 
-    for model_conf in config["models"]:
+    for i, model_conf in enumerate(models):
         model_name = model_conf["name"]
+        logger.info(f"Processing model {i+1}/{len(models)}: {model_name}")
         experiment_dir = get_experiment_dir(args.results_dir, model_name, config_name)
 
         if args.tune:
             logger.info(f"Running cross-validation for {model_name}...")
             summary_df = run_cross_validation(model_conf, windows)
             save_cv_summary(summary_df, model_conf, experiment_dir)
-            logger.info(f"CV summary:\n{summary_df}")
+            logger.info(f"CV summary saved for {model_name}:\n{summary_df}")
 
         if args.train:
             logger.info(f"Training {model_name} on full training set...")
@@ -82,20 +84,23 @@ def main():
                 model_conf, windows, experiment_dir
             )
             save_train_results(results_df, summary_df, model_conf, experiment_dir)
-            logger.info(f"Training summary:\n{summary_df}")
+            logger.info(f"Training completed for {model_name}. Summary:\n{summary_df}")
             logger.info(f"Models saved: {[str(p) for p in model_paths]}")
 
         if args.test:
             logger.info(f"Evaluating {model_name}...")
             results_df, summary_df = run_evaluation(model_conf, windows, experiment_dir)
             save_eval_results(results_df, summary_df, experiment_dir)
-            logger.info(f"Evaluation summary:\n{summary_df}")
+            logger.info(f"Evaluation completed for {model_name}. Summary:\n{summary_df}")
+
+        logger.info(f"Completed processing for model: {model_name}")
 
     if args.plot:
         logger.info("Generating plots...")
         generate_all_plots(args.results_dir, config_name)
+        logger.info("Plots generated")
 
-    logger.info("Done!")
+    logger.info("All tasks completed!")
 
 
 if __name__ == "__main__":
